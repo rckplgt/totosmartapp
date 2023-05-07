@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, link, useParams } from "react-router-dom";
 import {
   Row,
@@ -11,11 +11,22 @@ import {
 } from "react-bootstrap";
 import Rating from "../components/Rating";
 import products from "../products";
+import axios from "axios";
 
 const ProductScreen = () => {
   const { id } = useParams();
   //const { name } = products;
-  const product = products.find((p) => p._id === id);
+  //const product = products.find((p) => p._id === id);
+  const [product, setProduct] = useState({});
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const { data } = await axios.get(`/api/product/${id}`);
+      setProduct(data);
+    };
+
+    fetchProduct();
+  }, [id]);
 
   return (
     <div>
@@ -70,8 +81,7 @@ const ProductScreen = () => {
           </Card>
         </Col>
       </Row>
-
-      <p>{`${id} ${product.name}`}</p>
+      <>{id}</>
     </div>
   );
 };
