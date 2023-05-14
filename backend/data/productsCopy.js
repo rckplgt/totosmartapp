@@ -1,6 +1,6 @@
-const products = [
+const productsCopy = [
   {
-    
+    _id: "1",
     name: "Boys jacket",
     image: "/images/jacket.jpg",
     description: "Warm jacket for boys aged 3-5 years old",
@@ -12,7 +12,7 @@ const products = [
     numReviews: 12,
   },
   {
-    
+    _id: "2",
     name: "Unisex Romper",
     image: "/images/romper.jpg",
     description: "Romper for both boys and girls aged 2-6",
@@ -24,7 +24,7 @@ const products = [
     numReviews: 8,
   },
   {
-    
+    _id: "3",
     name: "Adidas Superstar - Girls",
     image: "/images/shoes.jpg",
     description: "Adidas Superstar for girls aged 6",
@@ -36,7 +36,7 @@ const products = [
     numReviews: 12,
   },
   {
-    
+    _id: "4",
     name: "Short trousers for boys",
     image: "/images/trousers_sh.jpg",
     description: "Short trousers for boys aged 4 suitable for swimming",
@@ -48,7 +48,7 @@ const products = [
     numReviews: 12,
   },
   {
-    
+    _id: "5",
     name: "Boys long sleeved t-shirts",
     image: "/images/tshirt_ls.jpg",
     description:
@@ -61,7 +61,7 @@ const products = [
     numReviews: 10,
   },
   {
-    
+    _id: "6",
     name: "Short sleeved t-shirts",
     image: "/images/tshirt_ss.jpg",
     description:
@@ -75,4 +75,4 @@ const products = [
   },
 ];
 
-export default products;
+export default productsCopy;

@@ -11,7 +11,7 @@ const reviewSchema = mongoose.Schema(
 
 const productSchema = mongoose.Schema(
   {
-    name: {
+    user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "User",
@@ -64,16 +64,10 @@ const productSchema = mongoose.Schema(
       required: true,
       default: 0,
     },
-
-    isAdmin: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
   },
   { timestamps: true }
 );
 
-const Product = mongoose.model("User", productSchema);
+const Product = mongoose.model("Product", productSchema);
 
 export default Product;
