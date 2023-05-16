@@ -81,7 +81,6 @@ const ProductScreen = () => {
           </Card>
         </Col>
       </Row>
-      <>{id}</>
     </div>
   );
 };
