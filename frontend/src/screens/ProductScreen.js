@@ -54,7 +54,7 @@ const ProductScreen = () => {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant="danger">{error}</Message>
+        <Message variant="danger">Products not found</Message>
       ) : (
         <Row>
           <Col md={4}>
