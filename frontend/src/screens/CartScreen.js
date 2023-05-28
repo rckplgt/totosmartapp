@@ -85,7 +85,7 @@ const CartScreen = () => {
           <ListGroup variant="flush">
             <ListGroup.Item>
               <h3>Sub-total({cartItems.reduce((acc, item)=>acc+item.qty, 0)})items</h3>
-              Kes {cartItems.reduce((acc, item)=>acc+item.qty*item.price, 0).toFixed(2)}
+              KES {cartItems.reduce((acc, item)=>acc+item.qty*item.price, 0).toFixed(2)}
             </ListGroup.Item>
             <ListGroup.Item>
               <Button type="button" className="btn-block" variant="dark" disabled={cartItems.length ===0} onClick={handleCheckout}>Proceed To Checkout</Button>
