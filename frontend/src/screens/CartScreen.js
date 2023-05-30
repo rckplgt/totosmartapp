@@ -19,10 +19,11 @@ const CartScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
+  const userLogin = useSelector((state) => state.userLogin.userInfo);
   const { cartItems } = cart;
   const qty = location.search ? Number(location.search.split("=")[1]) : 1;
 
-  console.log(cartItems);
+  console.log(userLogin);
 
   useEffect(() => {
     if (id) {
@@ -30,19 +31,20 @@ const CartScreen = () => {
     }
   }, [dispatch, id, qty]);
 
-  const removeFromCartHandler = (id)=>{
-    dispatch(removeFromCart(id))
-  }
+  const removeFromCartHandler = (id) => {
+    dispatch(removeFromCart(id));
+  };
 
-  const handleCheckout = ()=>{
+  const handleCheckout = () => {
     //navigate('/login?redirect=/shipping')
-    navigate('/shipping')
-  }
+    userLogin ? navigate("/shipping") : navigate("/login");
+    //navigate('/shipping')
+  };
 
   return (
     <Row>
       <Col md={8}>
-        <h1>Shopping Cart {console.log(id)}</h1>
+        <h1>Shopping Cart</h1>
         {cartItems.length === 0 ? (
           <Message>
             Your cart is empty. <Link to="/">Go back</Link>{" "}
@@ -63,7 +65,11 @@ const CartScreen = () => {
                     <Form.Control
                       as="select"
                       value={item.qty}
-                      onChange={(e) => dispatch(addToCart(item.productId, Number(e.target.value)))}
+                      onChange={(e) =>
+                        dispatch(
+                          addToCart(item.productId, Number(e.target.value))
+                        )
+                      }
                     >
                       {[...Array(item.countInStock).keys()].map((x) => (
                         <option key={x + 1} value={x + 1}>
@@ -73,7 +79,13 @@ const CartScreen = () => {
                     </Form.Control>
                   </Col>
                   <Col md={2}>
-                    <Button type = "button" variant = "light" onClick={()=>removeFromCartHandler(item.productId)} ><i className="fas fa-trash"></i></Button>
+                    <Button
+                      type="button"
+                      variant="light"
+                      onClick={() => removeFromCartHandler(item.productId)}
+                    >
+                      <i className="fas fa-trash"></i>
+                    </Button>
                   </Col>
                 </Row>
               </ListGroup.Item>
@@ -85,17 +97,31 @@ const CartScreen = () => {
         <Card>
           <ListGroup variant="flush">
             <ListGroup.Item>
-              <h3>Sub-total({cartItems.reduce((acc, item)=>acc+item.qty, 0)})items</h3>
-              KES {cartItems.reduce((acc, item)=>acc+item.qty*item.price, 0).toFixed(2)}
+              <h3>
+                Sub-total({cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                )items
+              </h3>
+              KES{" "}
+              {cartItems
+                .reduce((acc, item) => acc + item.qty * item.price, 0)
+                .toFixed(2)}
             </ListGroup.Item>
             <ListGroup.Item>
-              <Button type="button" className="btn-block" variant="dark" disabled={cartItems.length ===0} onClick={handleCheckout}>Proceed To Checkout</Button>
+              <div  className="d-grid gap-2">
+              <Button
+                type="button"
+                className="btn-block"
+                variant="dark"
+                disabled={cartItems.length === 0}
+                onClick={handleCheckout}
+              >
+                Proceed To Checkout
+              </Button>
+              </div>
             </ListGroup.Item>
           </ListGroup>
-
         </Card>
       </Col>
-
     </Row>
   );
 };

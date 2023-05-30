@@ -61,7 +61,7 @@ const PaymentScreen = () => {
           </Row>
         </Form.Group>
 
-        <Button type="submit" variant="primary">
+        <Button type="submit" variant="dark" className="button btn-block">
           Continue
         </Button>
       </Form>
