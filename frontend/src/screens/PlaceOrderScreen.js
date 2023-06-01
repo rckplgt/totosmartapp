@@ -17,8 +17,18 @@ import { saveShippingAddress } from "../actions/cartActions";
 import FormContainer from "../components/FormContainer";
 import CheckoutSteps from "../components/CheckoutSteps";
 
+import { createOrder } from "../actions/orderActions";
+
 const PlaceOrderScreen = () => {
+  const navigate = useNavigate;
+
   const cart = useSelector((state) => state.cart);
+  const user = useSelector((state) => state.userLogin);
+  const orderCreate = useSelector((state) => state.orderCreate);
+
+  const { order, success, error } = orderCreate;
+
+  const dispatch = useDispatch();
 
   const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
@@ -31,16 +41,36 @@ const PlaceOrderScreen = () => {
     0
   );
 
-  cart.shippingPrice = addDecimals( cart.itemPrice > 5000 ? 0 : 200);
+  cart.shippingPrice = addDecimals(cart.itemPrice > 5000 ? 0 : 200);
 
-  cart.taxPrices = addDecimals(Number(0.16 * cart.itemPrice).toFixed(2));
+  cart.taxPrice = addDecimals(Number(0.16 * cart.itemPrice).toFixed(2));
 
   cart.totalPrice = addDecimals(
-    Number(cart.itemPrice) + Number(cart.shippingPrice) + Number(cart.taxPrices)
+    Number(cart.itemPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice)
+  );
+
+  useEffect(
+    () => {
+      if (success) {
+        navigate(`/order/${order._id}`);
+      }
+    },[]
   );
 
   const placeOrderHandler = () => {
-    alert("Shut up and order!");
+    //console.log("Order")
+    dispatch(
+      createOrder({
+        name: user.userInfo.name,
+        orderItems: cart.cartItems,
+        shippingAddress: cart.shippingAddress,
+        paymentMethod: cart.paymentMethod,
+        itemPrice: cart.itemPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      })
+    );
   };
 
   return (
@@ -51,7 +81,7 @@ const PlaceOrderScreen = () => {
         <Col md={8}>
           <ListGroup>
             <ListGroup.Item>
-              <h2>Shipping Address</h2>
+              <h2>Shipping Address{console.log(user.userInfo)}</h2>
               <p>
                 <strong>Address: </strong>
                 {cart.shippingAddress.address} {cart.shippingAddress.city} -
@@ -130,7 +160,7 @@ const PlaceOrderScreen = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Taxes (VAT=16%) </Col>
-                  <Col>KES {cart.taxPrices}</Col>
+                  <Col>KES {cart.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
 
@@ -141,17 +171,20 @@ const PlaceOrderScreen = () => {
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-                <div   className="d-grid gap-2">
-                <Button
-                  type="button"
-                  className="btn btn-block d-grid gap-2"
-                  variant="dark"
-                
-                  disabled={cart.cartItems === 0}
-                  onClick={placeOrderHandler}
-                >
-                  Order
-                </Button>
+                {error && <Message variant="danger">{error}</Message>}
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <div className="d-grid gap-2">
+                  <Button
+                    type="button"
+                    className="btn btn-block d-grid gap-2"
+                    variant="dark"
+                    disabled={cart.cartItems === 0}
+                    onClick={placeOrderHandler}
+                  >
+                    Order
+                  </Button>
                 </div>
               </ListGroup.Item>
             </ListGroup>
