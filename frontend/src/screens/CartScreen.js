@@ -23,8 +23,6 @@ const CartScreen = () => {
   const { cartItems } = cart;
   const qty = location.search ? Number(location.search.split("=")[1]) : 1;
 
-  console.log(userLogin);
-
   useEffect(() => {
     if (id) {
       dispatch(addToCart(id, qty));
